@@ -12,6 +12,13 @@ Config is embedded in `public/index.html` and `public/js/app.js`; no .env requir
 - firestore.rules: Security rules aligned with roles
 - scripts/seed.js: Node seed script for demo data
 
+## Cookie Consent (Demo)
+- Shows a bottom banner on first visit with Accept Optional / Reject Optional and Preferences.
+- Stores decision in localStorage keys: `cookieConsent.v1.choice`, `cookieConsent.v1.optional`, `cookieConsent.v1.timestamp`.
+- Optional features only run when optional=true; placeholder logs where analytics would initialize.
+- Reopen preferences via the footer link “Cookie Preferences”.
+- Reset for testing by clearing those keys in the browser devtools (or clearing site data).
+
 ## Prerequisites
 - Firebase project with Hosting, Auth, and Firestore enabled (config is already hard-coded in the UI for project `hoosier-camp`)
 - Node 18+ only if you plan to run the seed script (frontend requires no npm install)
@@ -75,10 +82,11 @@ Config is embedded in `public/index.html` and `public/js/app.js`; no .env requir
 External only for demo: redirects to AdventistGiving; no payments handled in app.
 
 ## Hash Routes
-Attendee: /, /login, /profile, /home, /schedule, /event/:id, /announcements, /prayer, /feedback, /giving
+Attendee: /, /login, /profile, /home, /schedule, /event?id=<id>, /announcements, /prayer, /feedback, /giving
 Admin: /admin, /admin/announcements, /admin/prayer, /admin/analytics, /admin/feedback
 
 ## Notes
 - Age bracket computed client-side at registration/profile save.
 - No capacity enforcement or payments. Notifications are in-app only via announcements.
 - Uses Firebase CDN scripts (no build tooling, no Vite).
+

@@ -7,6 +7,10 @@ Use this checklist to walk the board through the demo flows. All data is demo-on
 - Deploy or `firebase serve --only hosting` so routing works (#/ paths)
 - Open the site in a fresh incognito window to avoid cached auth state
 
+## Cookie Consent (demo)
+- On first visit, show the cookie banner (Accept Optional / Reject Optional / Preferences).
+- Accept, reject, then reopen via footer “Cookie Preferences”; show optional toggle.
+
 ## Attendee Flow
 - Land on `/` hero: highlight demo-only notice and quick links
 - Go to `/login` and log in as `attendee1@demo.test` (HoosierDemo1!)
