@@ -27,6 +27,7 @@
       localStorage.setItem(KEYS.choice, choice);
       localStorage.setItem(KEYS.optional, optional ? 'true' : 'false');
       localStorage.setItem(KEYS.ts, timestamp);
+      localStorage.setItem('cookieConsent', choice === 'accepted' ? 'accepted' : choice);
     } catch (e) {
       console.warn('Unable to persist consent; continuing in-memory only');
     }
@@ -56,7 +57,7 @@
     banner.innerHTML = `
       <div class="cookie-text">
         <h3>Cookies & Privacy</h3>
-        <p>We use essential cookies/storage to make this demo work. Optional cookies would only be used for analytics/experience improvements and are OFF unless you accept.</p>
+        <p>We use essential cookies/storage to make this demo work. Optional cookies would only be used for analytics/experience improvements and are OFF unless you accept. <a href="/privacy.html#cookies">Learn more</a></p>
       </div>
       <div class="cookie-actions">
         <button class="button secondary" id="cookie-accept" type="button">Accept Optional</button>

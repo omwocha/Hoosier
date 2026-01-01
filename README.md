@@ -95,6 +95,12 @@ Config is embedded in `public/js/firebase-init.js`; no .env required.
 ## Giving Link
 External only for demo: redirects to AdventistGiving; no payments handled in app.
 
+## Legal Pages (Demo)
+- Terms: `/terms.html`; Privacy: `/privacy.html`
+- Login/register links reference these pages; sign-up requires accepting them.
+- Cookie banner links to Privacy and stores consent in localStorage.
+- Donations link out to AdventistGiving, which has its own terms and privacy policy.
+
 ## Routes
 - Login: /login.html
 - Attendee: / (landing), /home, /profile, /schedule, /event?id=..., /announcements, /prayer, /feedback, /giving
