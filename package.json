@@ -1,0 +1,11 @@
+﻿{
+  "name": "hoosier-camp-meeting-demo",
+  "version": "1.0.0",
+  "description": "Board demo for Hoosier Camp Meeting using Firebase Hosting, Auth, and Firestore",
+  "scripts": {
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

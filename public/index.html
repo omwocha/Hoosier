@@ -1,0 +1,365 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hoosier Camp Meeting Demo</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="/__/firebase/12.7.0/firebase-app-compat.js"></script>
+  <script defer src="/__/firebase/12.7.0/firebase-auth-compat.js"></script>
+  <script defer src="/__/firebase/12.7.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAs0XLqA56q3RzcIHT6duDNFFdZLi1_50A",
+      authDomain: "hoosier-camp.firebaseapp.com",
+      databaseURL: "https://hoosier-camp-default-rtdb.firebaseio.com",
+      projectId: "hoosier-camp",
+      storageBucket: "hoosier-camp.firebasestorage.app",
+      messagingSenderId: "863397091488",
+      appId: "1:863397091488:web:457bd3cd8063574f1451c5",
+      measurementId: "G-CKJDWTE28K"
+    };
+  </script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">HCM</div>
+      <div class="brand-text">
+        <div class="brand-title">Hoosier Camp Meeting</div>
+        <div class="brand-subtitle">Board Demo - Indiana Conference</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" data-nav="landing" href="#/">Landing</a>
+      <a class="nav-link" data-nav="schedule" href="#/schedule">Schedule</a>
+      <a class="nav-link" data-nav="announcements" href="#/announcements">Announcements</a>
+      <a class="nav-link" data-nav="prayer" href="#/prayer">Prayer</a>
+      <a class="nav-link" data-nav="feedback" href="#/feedback">Feedback</a>
+      <a class="nav-link" data-nav="giving" href="#/giving">Giving</a>
+      <a class="nav-link nav-link-auth" data-nav="home" href="#/home">Dashboard</a>
+      <a class="nav-link nav-link-admin" data-nav="admin" href="#/admin">Admin</a>
+      <button class="button ghost" id="logoutBtn" type="button">Sign out</button>
+      <a class="button primary" id="loginCta" href="#/login">Login</a>
+    </nav>
+  </header>
+
+  <main id="app">
+    <section class="hero" data-route="/">
+      <div class="hero-content">
+        <p class="eyebrow">Board Demo - Demo-only data</p>
+        <h1>Welcome to Hoosier Camp Meeting</h1>
+        <p class="lede">Walk through registration, schedule, announcements, prayer requests, and admin oversight in a demo-safe environment.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#/login">Login / Register</a>
+          <a class="button ghost" href="#/schedule">View Schedule</a>
+        </div>
+        <div class="pill">Deep navy header - Reverent & clean</div>
+      </div>
+      <div class="hero-visual">
+        <div class="card placeholder">
+          <p>Hero image placeholder</p>
+          <p>Indiana Conference - Camp Meeting</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" data-route="/login">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Access</p>
+          <h2>Login or Register</h2>
+          <p>Use demo accounts or create a new attendee account. Staff roles are seeded.</p>
+        </div>
+        <div id="authStatus" class="status-chip muted">Not signed in</div>
+      </div>
+      <div class="grid two">
+        <form id="loginForm" class="card form-card">
+          <h3>Login</h3>
+          <label>Email<input type="email" name="email" required></label>
+          <label>Password<input type="password" name="password" required></label>
+          <button class="button primary" type="submit">Login</button>
+          <p class="helper">Admins: use seeded admin accounts from README.</p>
+        </form>
+        <form id="registerForm" class="card form-card">
+          <h3>Register</h3>
+          <label>Full Name<input type="text" name="fullName" required></label>
+          <label>Email<input type="email" name="email" required></label>
+          <label>Password<input type="password" name="password" required minlength="6"></label>
+          <label>Date of Birth<input type="date" name="dateOfBirth" required></label>
+          <label>Church<input type="text" name="church" placeholder="Home church"></label>
+          <button class="button secondary" type="submit">Create Account</button>
+          <p class="helper">New accounts default to attendee role.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel" data-route="/home">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Dashboard</p>
+          <h2>Welcome back</h2>
+          <p>See your profile, upcoming sessions, announcements, and prayer requests.</p>
+        </div>
+        <div id="userRoleBadge" class="status-chip muted">Guest</div>
+      </div>
+      <div class="grid three">
+        <div class="card">
+          <div class="card-header">
+            <h3>Profile Snapshot</h3>
+            <a class="link" href="#/profile">Edit</a>
+          </div>
+          <div id="profileSummary" class="stack small"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Upcoming Sessions</h3>
+            <a class="link" href="#/schedule">Full schedule</a>
+          </div>
+          <div id="upcomingList" class="stack small"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Announcements</h3>
+            <a class="link" href="#/announcements">Feed</a>
+          </div>
+          <div id="announcementPreview" class="stack small"></div>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <div class="card-header">
+            <h3>My Prayer Requests</h3>
+            <a class="link" href="#/prayer">Submit / View</a>
+          </div>
+          <div id="prayerPreview" class="stack small"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Feedback</h3>
+            <a class="link" href="#/feedback">Share thoughts</a>
+          </div>
+          <p class="muted">Thank you for helping us serve better. Session and overall options available.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" data-route="/profile">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Attendee</p>
+          <h2>Profile</h2>
+          <p>Keep your details up to date. Age bracket is calculated from your birthday.</p>
+        </div>
+      </div>
+      <form id="profileForm" class="card form-card">
+        <div class="grid three">
+          <label>Full Name<input type="text" name="fullName" required></label>
+          <label>Phone<input type="tel" name="phone" placeholder="Optional"></label>
+          <label>Church<input type="text" name="church" placeholder="Home church"></label>
+          <label>Marital Status<select name="maritalStatus"><option value="">Select</option><option>Single</option><option>Married</option><option>Widowed</option><option>Divorced</option></select></label>
+          <label>Gender<select name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Other</option></select></label>
+          <label>Date of Birth<input type="date" name="dateOfBirth"></label>
+        </div>
+        <button class="button primary" type="submit">Save Profile</button>
+        <p class="helper">Role is managed by admins. Family members optional for this demo.</p>
+      </form>
+    </section>
+
+    <section class="panel" data-route="/schedule">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Program</p>
+          <h2>Schedule</h2>
+          <p>Browse sessions and open details for speaker bios and YouTube streams.</p>
+        </div>
+      </div>
+      <div id="scheduleList" class="stack"></div>
+    </section>
+
+    <section class="panel" data-route="/event">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Event</p>
+          <h2 id="eventTitle">Session</h2>
+          <p id="eventMeta"></p>
+        </div>
+        <a class="button ghost" href="#/schedule">Back to schedule</a>
+      </div>
+      <div id="eventDetail" class="card"></div>
+    </section>
+
+    <section class="panel" data-route="/announcements">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Live Feed</p>
+          <h2>Announcements</h2>
+          <p>Real-time updates from staff.</p>
+        </div>
+      </div>
+      <div id="announcementList" class="stack"></div>
+    </section>
+
+    <section class="panel" data-route="/prayer">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Care</p>
+          <h2>Prayer Requests</h2>
+          <p>Share a request (optionally anonymous) and track when it is prayed for.</p>
+        </div>
+      </div>
+      <form id="prayerForm" class="card form-card">
+        <label>Request<textarea name="requestText" rows="3" required></textarea></label>
+        <label class="inline"><input type="checkbox" name="isAnonymous"> Submit anonymously</label>
+        <button class="button primary" type="submit">Submit Request</button>
+      </form>
+      <div class="card">
+        <div class="card-header">
+          <h3>My Requests</h3>
+          <span class="muted small">Status: pending -> prayedFor</span>
+        </div>
+        <div id="myPrayerList" class="stack small"></div>
+      </div>
+    </section>
+
+    <section class="panel" data-route="/feedback">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Voice</p>
+          <h2>Feedback</h2>
+          <p>Submit session or overall feedback. Anonymous is optional.</p>
+        </div>
+      </div>
+      <form id="feedbackForm" class="card form-card">
+        <div class="grid two">
+          <label>Type
+            <select name="type" required>
+              <option value="session">Session</option>
+              <option value="overall">Overall</option>
+            </select>
+          </label>
+          <label>Session (optional)
+            <select name="eventId">
+              <option value="">Select a session</option>
+            </select>
+          </label>
+        </div>
+        <label>Positives<textarea name="positives" rows="2" required></textarea></label>
+        <label>Improvements<textarea name="improvements" rows="2" required></textarea></label>
+        <label>Questions<textarea name="questions" rows="2" placeholder="Optional"></textarea></label>
+        <label class="inline"><input type="checkbox" name="isAnonymous"> Submit anonymously</label>
+        <button class="button primary" type="submit">Submit Feedback</button>
+      </form>
+    </section>
+
+    <section class="panel" data-route="/giving">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Support</p>
+          <h2>Giving</h2>
+          <p>External giving link for demo purposes.</p>
+        </div>
+      </div>
+      <div class="card centered">
+        <p>For the board demo, giving links open externally.</p>
+        <a class="button primary" href="https://www.adventistgiving.org" target="_blank" rel="noreferrer">Open Giving Site</a>
+      </div>
+    </section>
+
+    <section class="panel" data-route="/admin">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Admin</p>
+          <h2>Admin Home</h2>
+          <p>Quick links for announcements, prayer queue, analytics, and feedback.</p>
+        </div>
+        <div id="adminRoleBadge" class="status-chip muted">Admin</div>
+      </div>
+      <div class="grid four">
+        <a class="card link-card" href="#/admin/announcements"><h3>Announcements</h3><p>Create updates</p></a>
+        <a class="card link-card" href="#/admin/prayer"><h3>Prayer Queue</h3><p>Update statuses</p></a>
+        <a class="card link-card" href="#/admin/analytics"><h3>Analytics</h3><p>Counts by church/age/gender</p></a>
+        <a class="card link-card" href="#/admin/feedback"><h3>Feedback</h3><p>Review & flag</p></a>
+      </div>
+    </section>
+
+    <section class="panel" data-route="/admin/announcements">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Admin</p>
+          <h2>Announcement Manager</h2>
+          <p>Create new announcements for the feed.</p>
+        </div>
+      </div>
+      <form id="adminAnnouncementForm" class="card form-card">
+        <label>Title<input type="text" name="title" required></label>
+        <label>Message<textarea name="message" rows="2" required></textarea></label>
+        <button class="button primary" type="submit">Post Announcement</button>
+      </form>
+      <div id="adminAnnouncementList" class="stack small"></div>
+    </section>
+
+    <section class="panel" data-route="/admin/prayer">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Admin</p>
+          <h2>Prayer Queue</h2>
+          <p>Prayer Coordinator/Admin can update statuses.</p>
+        </div>
+      </div>
+      <div id="adminPrayerList" class="stack small"></div>
+    </section>
+
+    <section class="panel" data-route="/admin/analytics">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Admin</p>
+          <h2>Analytics</h2>
+          <p>Demo-scale client-side aggregation for age, gender, and church.</p>
+        </div>
+      </div>
+      <div class="grid three" id="analyticsSummary"></div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Drilldowns</h3>
+          <span class="muted small">Counts by church</span>
+        </div>
+        <div id="analyticsDetails" class="stack small"></div>
+      </div>
+    </section>
+
+    <section class="panel" data-route="/admin/feedback">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Admin</p>
+          <h2>Feedback Review</h2>
+          <p>Filter/search and flag questions needing response.</p>
+        </div>
+      </div>
+      <div class="card filter-bar">
+        <label>Type
+          <select id="feedbackFilterType">
+            <option value="">All</option>
+            <option value="session">Session</option>
+            <option value="overall">Overall</option>
+          </select>
+        </label>
+        <label>Search
+          <input id="feedbackSearch" type="text" placeholder="Search text">
+        </label>
+      </div>
+      <div id="feedbackList" class="stack small"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Hoosier Camp Meeting - Demo only - Firebase Hosting</div>
+    <div class="muted small">Roles: attendee, admin, viewer, prayerCoordinator</div>
+  </footer>
+</body>
+</html>
+
+
+
+
