@@ -5,21 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hoosier Camp Meeting Demo</title>
   <link rel="stylesheet" href="css/styles.css">
-  <script defer src="/__firebase/12.7.0/firebase-app-compat.js"></script>
-  <script defer src="/__firebase/12.7.0/firebase-auth-compat.js"></script>
-  <script defer src="/__firebase/12.7.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAs0XLqA56q3RzcIHT6duDNFFdZLi1_50A",
-      authDomain: "hoosier-camp.firebaseapp.com",
-      databaseURL: "https://hoosier-camp-default-rtdb.firebaseio.com",
-      projectId: "hoosier-camp",
-      storageBucket: "hoosier-camp.firebasestorage.app",
-      messagingSenderId: "863397091488",
-      appId: "1:863397091488:web:457bd3cd8063574f1451c5",
-      measurementId: "G-CKJDWTE28K"
-    };
-  </script>
+  <script defer src="/__/firebase/12.7.0/firebase-app-compat.js"></script>
+  <script defer src="/__/firebase/12.7.0/firebase-auth-compat.js"></script>
+  <script defer src="/__/firebase/12.7.0/firebase-firestore-compat.js"></script>
+  <script defer src="js/firebase-init.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/router-guards.js"></script>
   <script defer src="js/cookie-consent.js"></script>
   <script defer src="js/app.js"></script>
 </head>
@@ -42,7 +33,7 @@
       <a class="nav-link nav-link-auth" data-nav="home" href="#/home">Dashboard</a>
       <a class="nav-link nav-link-admin" data-nav="admin" href="#/admin">Admin</a>
       <button class="button ghost" id="logoutBtn" type="button">Sign out</button>
-      <a class="button primary" id="loginCta" href="#/login">Login</a>
+      <a class="button primary" id="loginCta" href="/login.html">Login</a>
     </nav>
   </header>
 
@@ -53,7 +44,7 @@
         <h1>Welcome to Hoosier Camp Meeting</h1>
         <p class="lede">Walk through registration, schedule, announcements, prayer requests, and admin oversight in a demo-safe environment.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#/login">Login / Register</a>
+          <a class="button primary" href="/login.html">Login / Register</a>
           <a class="button ghost" href="#/schedule">View Schedule</a>
         </div>
         <div class="pill">Deep navy header - Reverent & clean</div>
@@ -63,36 +54,6 @@
           <p>Hero image placeholder</p>
           <p>Indiana Conference - Camp Meeting</p>
         </div>
-      </div>
-    </section>
-
-    <section class="panel" data-route="/login">
-      <div class="panel-header">
-        <div>
-          <p class="eyebrow">Access</p>
-          <h2>Login or Register</h2>
-          <p>Use demo accounts or create a new attendee account. Staff roles are seeded.</p>
-        </div>
-        <div id="authStatus" class="status-chip muted">Not signed in</div>
-      </div>
-      <div class="grid two">
-        <form id="loginForm" class="card form-card">
-          <h3>Login</h3>
-          <label>Email<input type="email" name="email" required></label>
-          <label>Password<input type="password" name="password" required></label>
-          <button class="button primary" type="submit">Login</button>
-          <p class="helper">Admins: use seeded admin accounts from README.</p>
-        </form>
-        <form id="registerForm" class="card form-card">
-          <h3>Register</h3>
-          <label>Full Name<input type="text" name="fullName" required></label>
-          <label>Email<input type="email" name="email" required></label>
-          <label>Password<input type="password" name="password" required minlength="6"></label>
-          <label>Date of Birth<input type="date" name="dateOfBirth" required></label>
-          <label>Church<input type="text" name="church" placeholder="Home church"></label>
-          <button class="button secondary" type="submit">Create Account</button>
-          <p class="helper">New accounts default to attendee role.</p>
-        </form>
       </div>
     </section>
 

@@ -210,3 +210,20 @@ main { padding: 32px; max-width: 1200px; margin: 0 auto; }
   #cookie-banner { flex-direction: column; align-items: flex-start; }
   #cookie-banner .cookie-actions { width: 100%; }
 }
+/* Auth page */
+.login-page {
+  background: var(--sand);
+}
+.topbar.minimal { position: static; box-shadow: none; }
+.footer.minimal { justify-content: center; text-align: center; }
+.auth-shell {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 12px;
+}
+.auth-card { width: min(520px, 94vw); }
+.auth-message { margin: 10px 0; color: var(--muted); min-height: 18px; }
+.auth-message.error { color: #b91c1c; }
+.auth-divider { text-align: center; color: var(--muted); margin: 12px 0; }

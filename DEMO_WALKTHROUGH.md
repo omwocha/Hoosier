@@ -11,9 +11,14 @@ Use this checklist to walk the board through the demo flows. All data is demo-on
 - On first visit, show the cookie banner (Accept Optional / Reject Optional / Preferences).
 - Accept, reject, then reopen via footer “Cookie Preferences”; show optional toggle.
 
+## Auth Flow
+- Go to `/login.html`
+- Email/password: sign in as `attendee1@demo.test` (HoosierDemo1!)
+- Password reset: click “Forgot Password” and show prompt workflow
+- Google Sign-In: click “Continue with Google” (after enabling provider in console) to demo OAuth
+- Note: landing on a protected link redirects to `/login.html?return=...`; after sign-in, it returns to the original page
+
 ## Attendee Flow
-- Land on `/` hero: highlight demo-only notice and quick links
-- Go to `/login` and log in as `attendee1@demo.test` (HoosierDemo1!)
 - `/home`: show profile snapshot, upcoming sessions, announcements, and prayer preview
 - `/profile`: update a field (e.g., phone/church) and save; explain age bracket auto-calculated
 - `/schedule`: browse list, click into `#/event?id=<id>` to show details + YouTube link

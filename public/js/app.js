@@ -13,7 +13,6 @@
 
   const routeConfig = {
     '/': { requiresAuth: false },
-    '/login': { requiresAuth: false },
     '/home': { requiresAuth: true },
     '/profile': { requiresAuth: true },
     '/schedule': { requiresAuth: false },
@@ -38,7 +37,8 @@
 
   function init() {
     if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
+      console.warn('Firebase not initialized');
+      return;
     }
     auth = firebase.auth();
     db = firebase.firestore();
@@ -49,7 +49,11 @@
     auth.onAuthStateChanged(async (user) => {
       state.user = user;
       if (user) {
-        await ensureProfile(user);
+        const provider = user.providerData?.[0]?.providerId || 'password';
+        if (window.HCMAuth?.ensureUserDocument) {
+          await HCMAuth.ensureUserDocument(user, provider);
+        }
+        await loadProfile();
         subscribeCoreData();
         setText('#authStatus', `Signed in as ${user.email}`);
       } else {
@@ -105,11 +109,23 @@
     const guard = routeConfig[key] || { requiresAuth: false };
 
     if (guard.requiresAuth && !state.user) {
-      location.hash = '#/login';
+      if (window.HCMRouterGuards?.redirectToLogin) {
+        HCMRouterGuards.redirectToLogin(location.pathname + (location.hash || ''));
+      } else {
+        location.href = '/login.html';
+      }
       return;
     }
     if (guard.requiresRole && !hasRole(guard.requiresRole)) {
-      location.hash = state.user ? '#/home' : '#/login';
+      if (!state.user) {
+        if (window.HCMRouterGuards?.redirectToLogin) {
+          HCMRouterGuards.redirectToLogin(location.pathname + (location.hash || ''));
+        } else {
+          location.href = '/login.html';
+        }
+      } else {
+        location.hash = '#/home';
+      }
       return;
     }
 
@@ -155,24 +171,6 @@
     document.getElementById('loginCta').style.display = loggedIn ? 'none' : 'inline-block';
     setText('#userRoleBadge', state.profile ? (state.profile.role || 'attendee') : 'Guest');
     setText('#adminRoleBadge', state.profile ? (state.profile.role || '-') : '-');
-  }
-
-  async function ensureProfile(user) {
-    const ref = db.collection('users').doc(user.uid);
-    const snap = await ref.get();
-    if (!snap.exists) {
-      const profile = {
-        fullName: user.displayName || 'New Attendee',
-        email: user.email,
-        role: 'attendee',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      await ref.set(profile, { merge: true });
-      state.profile = profile;
-    } else {
-      state.profile = snap.data();
-    }
   }
 
   async function loadProfile() {

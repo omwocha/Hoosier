@@ -1,0 +1,153 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hoosier Camp Meeting App - Login</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="/__/firebase/12.7.0/firebase-app-compat.js"></script>
+  <script defer src="/__/firebase/12.7.0/firebase-auth-compat.js"></script>
+  <script defer src="/__/firebase/12.7.0/firebase-firestore-compat.js"></script>
+  <script defer src="js/firebase-init.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/cookie-consent.js"></script>
+</head>
+<body class="login-page">
+  <header class="topbar minimal">
+    <div class="brand">
+      <div class="brand-mark">HCM</div>
+      <div class="brand-text">
+        <div class="brand-title">Hoosier Camp Meeting</div>
+        <div class="brand-subtitle">Board Demo</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" href="/index.html">Back to site</a>
+    </nav>
+  </header>
+
+  <main class="auth-shell">
+    <div class="auth-card card">
+      <p class="eyebrow">Board Demo - Sign In</p>
+      <h1>Hoosier Camp Meeting App</h1>
+      <p class="muted">Sign in with email/password or Google. First login creates an attendee profile.</p>
+
+      <div id="authMessage" class="auth-message" role="alert" aria-live="polite"></div>
+
+      <form id="loginForm" class="stack small">
+        <label>Email<input type="email" name="email" required autocomplete="username"></label>
+        <label>Password<input type="password" name="password" required autocomplete="current-password"></label>
+        <button class="button primary" type="submit" id="loginBtn">Sign In</button>
+        <button class="button ghost" type="button" id="resetBtn">Forgot Password</button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <button class="button secondary" type="button" id="googleBtn">Continue with Google</button>
+
+      <div class="auth-divider">New here?</div>
+
+      <form id="registerForm" class="stack small">
+        <label>Full Name<input type="text" name="fullName" required autocomplete="name"></label>
+        <label>Email<input type="email" name="email" required autocomplete="email"></label>
+        <label>Password<input type="password" name="password" required autocomplete="new-password" minlength="6"></label>
+        <button class="button primary" type="submit" id="registerBtn">Create Account</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer minimal">
+    <div>Hoosier Camp Meeting - Demo only - Firebase Hosting</div>
+    <div class="muted small">Cookies: manage via banner or footer on main site.</div>
+  </footer>
+
+  <script>
+    (function() {
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const googleBtn = document.getElementById('googleBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const messageBox = document.getElementById('authMessage');
+      const auth = firebase.auth();
+
+      function setMessage(text, isError) {
+        messageBox.textContent = text || '';
+        messageBox.className = 'auth-message' + (isError ? ' error' : '');
+      }
+
+      function setLoading(isLoading) {
+        [loginForm, registerForm, googleBtn, resetBtn].forEach((el) => {
+          if (!el) return;
+          el.querySelectorAll ? el.querySelectorAll('button, input').forEach((i) => i.disabled = isLoading) : el.disabled = isLoading;
+        });
+      }
+
+      loginForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData(loginForm);
+        setLoading(true);
+        setMessage('Signing in...');
+        try {
+          await HCMAuth.signInWithEmail(data.get('email'), data.get('password'));
+        } catch (err) {
+          setMessage(err.message || 'Sign in failed', true);
+          setLoading(false);
+        }
+      });
+
+      registerForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData(registerForm);
+        setLoading(true);
+        setMessage('Creating account...');
+        try {
+          await HCMAuth.registerWithEmail(data.get('email'), data.get('password'), data.get('fullName'));
+        } catch (err) {
+          setMessage(err.message || 'Registration failed', true);
+          setLoading(false);
+        }
+      });
+
+      googleBtn?.addEventListener('click', async () => {
+        setLoading(true);
+        setMessage('Opening Google Sign-In...');
+        try {
+          await HCMAuth.signInWithGoogle();
+        } catch (err) {
+          setMessage(err.message || 'Google Sign-In failed', true);
+          setLoading(false);
+        }
+      });
+
+      resetBtn?.addEventListener('click', async () => {
+        const email = prompt('Enter your email to reset password:');
+        if (!email) return;
+        setLoading(true);
+        setMessage('Sending reset email...');
+        try {
+          await HCMAuth.sendPasswordReset(email);
+          setMessage('Password reset email sent.');
+        } catch (err) {
+          setMessage(err.message || 'Reset failed', true);
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          setLoading(true);
+          setMessage('Signing you in...');
+          const provider = user.providerData?.[0]?.providerId || 'password';
+          try {
+            await HCMAuth.ensureUserDocument(user, provider);
+          } catch (e) {
+            console.warn('Unable to ensure profile', e);
+          }
+          HCMAuth.redirectAfterLogin(HCMAuth.getReturnUrl());
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

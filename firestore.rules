@@ -16,8 +16,11 @@ service cloud.firestore {
         && request.auth.uid == userId
         && (!('role' in request.resource.data) || request.resource.data.role == 'attendee');
       allow read: if isAdmin() || isViewer() || (signedIn() && request.auth.uid == userId);
-      allow update: if (signedIn() && request.auth.uid == userId && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role))
-        || isAdmin();
+      allow update: if isAdmin()
+        || (signedIn()
+            && request.auth.uid == userId
+            && (('role' in request.resource.data) == ('role' in resource.data))
+            && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role));
     }
 
     match /events/{eventId} {

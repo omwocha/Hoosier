@@ -2,12 +2,16 @@
 
 Firebase Hosting demo for the Indiana Conference Hoosier Camp Meeting app. HTML/CSS/JS (no build step) with Firebase Auth + Firestore. Demo-only data; not for production.
 
-Config is embedded in `public/index.html` and `public/js/app.js`; no .env required.
+Config is embedded in `public/js/firebase-init.js`; no .env required.
 
 ## Project Structure
 - public/index.html: single-page UI with hash/query routing for attendee/admin screens
+- public/login.html: dedicated login/sign-up + Google Sign-In page
 - public/css/styles.css: theme styling (navy/slate, clean layout)
-- public/js/app.js: Firebase wiring, routing, data rendering (firebaseConfig is hard-coded)
+- public/js/firebase-init.js: initializes Firebase with the hard-coded config
+- public/js/auth.js: shared auth helpers (email/password, Google, password reset, user doc provisioning)
+- public/js/router-guards.js: redirects unauthenticated users to login with return URL
+- public/js/app.js: Firebase wiring, routing, data rendering
 - firebase.json: Hosting config (rewrite all to index.html)
 - firestore.rules: Security rules aligned with roles
 - scripts/seed.js: Node seed script for demo data
@@ -19,8 +23,23 @@ Config is embedded in `public/index.html` and `public/js/app.js`; no .env requir
 - Reopen preferences via the footer link “Cookie Preferences”.
 - Reset for testing by clearing those keys in the browser devtools (or clearing site data).
 
+## Auth (Email/Password + Google)
+- Login page: `/login.html`
+- Email/password login + registration, password reset, Google Sign-In (popup with redirect fallback).
+- On first login, a Firestore user doc is created/merged with uid, fullName, email, authProvider, role=attendee, timestamps.
+- Protected routes redirect to `/login.html?return=<original>`; on success redirect back (default `/index.html#/home`).
+
+### Enable Google Sign-In
+1) Firebase Console → Auth → Sign-in method → Google → Enable.
+2) Authorized domains: include your Firebase Hosting domain and `localhost` (plus `127.0.0.1` if used locally).
+
+### Creating initial admins or prayer coordinators
+- In Firebase Auth, create the user (email/password or Google).
+- In Firestore, set `users/{uid}` `role` to `admin`, `viewer`, or `prayerCoordinator` (other fields optional). Console edit is fine for demo bootstrapping.
+- Optional: set custom claim `role` via console/CLI; rules rely on the role field for this demo.
+
 ## Prerequisites
-- Firebase project with Hosting, Auth, and Firestore enabled (config is already hard-coded in the UI for project `hoosier-camp`)
+- Firebase project with Hosting, Auth, and Firestore enabled (config is already hard-coded for `hoosier-camp`)
 - Node 18+ only if you plan to run the seed script (frontend requires no npm install)
 - Service account key only if running the seed script (store as serviceAccountKey.json or set GOOGLE_APPLICATION_CREDENTIALS)
 
@@ -54,11 +73,6 @@ Config is embedded in `public/index.html` and `public/js/app.js`; no .env requir
 - viewer: read-only admin reports (announcements feed is public, admin pages limited to reports)
 - prayerCoordinator: manage prayer queue (read/update), no other admin writes
 
-### Creating initial admins or prayer coordinators
-- In Firebase Auth, create the user (email/password).
-- In Firestore, set `users/{uid}` `role` to `admin`, `viewer`, or `prayerCoordinator` (other fields optional). This bypass is allowed via console for the initial seed/admin bootstrapping.
-- Optional: also set custom claim `role` via Firebase console/CLI, but rules rely on the role field in the user doc for this demo.
-
 ## Resetting the Demo
 1) Delete collections in Firestore (users, events, speakers, announcements, prayerRequests, feedback). Simple approach: use Firestore console with filters or `firebase firestore:delete` commands.
 2) Re-run `npm run seed` to repopulate.
@@ -73,7 +87,7 @@ Config is embedded in `public/index.html` and `public/js/app.js`; no .env requir
 - feedback/{id}: type (session|overall), eventId?, positives, improvements, questions, isAnonymous, userId?, timestamp, flags.needsResponse
 
 ## Security Rules Highlights
-- users: attendees read/write only their doc; admin/viewer can read all; only admin can change roles
+- users: attendees read/write only their doc; admin/viewer can read all; only admin can change roles (role writes blocked for self-service)
 - events/speakers/announcements: public read; admin write
 - prayerRequests: signed-in create; user reads own; admin/prayerCoordinator read/update status
 - feedback: signed-in create; admin/viewer read; admin update/delete
@@ -81,12 +95,12 @@ Config is embedded in `public/index.html` and `public/js/app.js`; no .env requir
 ## Giving Link
 External only for demo: redirects to AdventistGiving; no payments handled in app.
 
-## Hash Routes
-Attendee: /, /login, /profile, /home, /schedule, /event?id=<id>, /announcements, /prayer, /feedback, /giving
-Admin: /admin, /admin/announcements, /admin/prayer, /admin/analytics, /admin/feedback
+## Routes
+- Login: /login.html
+- Attendee: / (landing), /home, /profile, /schedule, /event?id=..., /announcements, /prayer, /feedback, /giving
+- Admin: /admin, /admin/announcements, /admin/prayer, /admin/analytics, /admin/feedback
 
 ## Notes
 - Age bracket computed client-side at registration/profile save.
 - No capacity enforcement or payments. Notifications are in-app only via announcements.
 - Uses Firebase CDN scripts (no build tooling, no Vite).
-
