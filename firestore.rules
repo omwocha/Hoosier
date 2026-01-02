@@ -23,9 +23,14 @@ service cloud.firestore {
             && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role));
     }
 
-    match /events/{eventId} {
+    match /schedule/{eventId} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if false; // legacy collection kept read-only
     }
 
     match /speakers/{speakerId} {

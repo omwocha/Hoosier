@@ -54,17 +54,18 @@ const speakers = [
   { id: 'david-thompson', name: 'Elder David Thompson', bio: 'Conference elder and evangelism coach.', youtubeChannelUrl: 'https://youtube.com/' }
 ];
 
-const events = [
-  { id: 'sunrise-worship', title: 'Sunrise Worship', description: 'Morning devotion with music and prayer.', startTime: '2026-06-10T07:00:00-05:00', endTime: '2026-06-10T08:00:00-05:00', ageGroups: ['All Ages'], location: 'Main Lawn', speakerId: 'mark-collins', youtubeUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ' },
-  { id: 'youth-rally', title: 'Youth Rally', description: 'Interactive worship for youth.', startTime: '2026-06-10T10:00:00-05:00', endTime: '2026-06-10T11:30:00-05:00', ageGroups: ['13-15', '16-18'], location: 'Youth Tent', speakerId: 'alicia-reynolds' },
-  { id: 'bible-seminar', title: 'Bible Seminar', description: 'Deep dive into the Gospels.', startTime: '2026-06-10T14:00:00-05:00', endTime: '2026-06-10T15:30:00-05:00', ageGroups: ['19-35', '36-59'], location: 'Chapel', speakerId: 'eunice-kim', youtubeUrl: 'https://youtube.com/watch?v=aqz-KE-bpKQ' },
-  { id: 'family-panel', title: 'Family Panel', description: 'Practical tools for families.', startTime: '2026-06-11T09:00:00-05:00', endTime: '2026-06-11T10:30:00-05:00', ageGroups: ['All Ages'], location: 'Main Hall', speakerId: 'alicia-reynolds' },
-  { id: 'prayer-walk', title: 'Prayer Walk', description: 'Campus prayer walk led by staff.', startTime: '2026-06-11T12:00:00-05:00', endTime: '2026-06-11T13:00:00-05:00', ageGroups: ['All Ages'], location: 'Camp Grounds', speakerId: 'mark-collins' },
-  { id: 'youth-workshop', title: 'Youth Workshop', description: 'Hands-on workshop for youth leaders.', startTime: '2026-06-11T15:00:00-05:00', endTime: '2026-06-11T16:30:00-05:00', ageGroups: ['16-18', '19-35'], location: 'Youth Tent', speakerId: 'david-thompson' },
-  { id: 'evening-service', title: 'Evening Service', description: 'Conference-wide worship service.', startTime: '2026-06-11T19:00:00-05:00', endTime: '2026-06-11T20:30:00-05:00', ageGroups: ['All Ages'], location: 'Main Auditorium', speakerId: 'eunice-kim', youtubeUrl: 'https://youtube.com/watch?v=oHg5SJYRHA0' },
-  { id: 'music-night', title: 'Music Night', description: 'Concert from regional churches.', startTime: '2026-06-12T18:00:00-05:00', endTime: '2026-06-12T19:30:00-05:00', ageGroups: ['All Ages'], location: 'Main Auditorium', speakerId: 'david-thompson' },
-  { id: 'kids-story', title: 'Kids Story Hour', description: 'Story time and crafts for kids.', startTime: '2026-06-12T09:30:00-05:00', endTime: '2026-06-12T10:30:00-05:00', ageGroups: ['0-3', '4-6', '7-9', '10-12'], location: 'Kids Tent', speakerId: 'alicia-reynolds' },
-  { id: 'closing-service', title: 'Closing Service', description: 'Celebration and sending.', startTime: '2026-06-13T11:00:00-05:00', endTime: '2026-06-13T12:00:00-05:00', ageGroups: ['All Ages'], location: 'Main Auditorium', speakerId: 'mark-collins' }
+// Canonical schedule collection (previously "events") for June 1-6, 2026.
+const schedule = [
+  { id: 'sunrise-worship', title: 'Sunrise Worship', description: 'Morning devotion with music and prayer.', startTime: '2026-06-01T06:45:00-05:00', endTime: '2026-06-01T07:30:00-05:00', ageGroups: ['All Ages'], location: 'Main Lawn', speakerId: 'mark-collins', youtubeUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ' },
+  { id: 'youth-rally', title: 'Youth Rally', description: 'Interactive worship for youth.', startTime: '2026-06-01T10:00:00-05:00', endTime: '2026-06-01T11:30:00-05:00', ageGroups: ['13-15', '16-18'], location: 'Youth Tent', speakerId: 'alicia-reynolds' },
+  { id: 'bible-seminar', title: 'Bible Seminar', description: 'Deep dive into the Gospels.', startTime: '2026-06-01T15:00:00-05:00', endTime: '2026-06-01T16:30:00-05:00', ageGroups: ['19-35', '36-59'], location: 'Chapel', speakerId: 'eunice-kim', youtubeUrl: 'https://youtube.com/watch?v=aqz-KE-bpKQ' },
+  { id: 'family-panel', title: 'Family Panel', description: 'Practical tools for families.', startTime: '2026-06-02T09:00:00-05:00', endTime: '2026-06-02T10:30:00-05:00', ageGroups: ['All Ages'], location: 'Main Hall', speakerId: 'alicia-reynolds' },
+  { id: 'prayer-walk', title: 'Prayer Walk', description: 'Campus prayer walk led by staff.', startTime: '2026-06-02T12:30:00-05:00', endTime: '2026-06-02T13:30:00-05:00', ageGroups: ['All Ages'], location: 'Camp Grounds', speakerId: 'mark-collins' },
+  { id: 'youth-workshop', title: 'Youth Workshop', description: 'Hands-on workshop for youth leaders.', startTime: '2026-06-02T15:30:00-05:00', endTime: '2026-06-02T17:00:00-05:00', ageGroups: ['16-18', '19-35'], location: 'Youth Tent', speakerId: 'david-thompson' },
+  { id: 'evening-service', title: 'Evening Service', description: 'Conference-wide worship service.', startTime: '2026-06-02T19:00:00-05:00', endTime: '2026-06-02T20:30:00-05:00', ageGroups: ['All Ages'], location: 'Main Auditorium', speakerId: 'eunice-kim', youtubeUrl: 'https://youtube.com/watch?v=oHg5SJYRHA0' },
+  { id: 'kids-story', title: 'Kids Story Hour', description: 'Story time and crafts for kids.', startTime: '2026-06-04T09:30:00-05:00', endTime: '2026-06-04T10:30:00-05:00', ageGroups: ['0-3', '4-6', '7-9', '10-12'], location: 'Kids Tent', speakerId: 'alicia-reynolds' },
+  { id: 'music-night', title: 'Music Night', description: 'Concert from regional churches.', startTime: '2026-06-05T18:00:00-05:00', endTime: '2026-06-05T19:30:00-05:00', ageGroups: ['All Ages'], location: 'Main Auditorium', speakerId: 'david-thompson' },
+  { id: 'closing-service', title: 'Closing Service', description: 'Celebration and sending.', startTime: '2026-06-06T11:00:00-05:00', endTime: '2026-06-06T12:15:00-05:00', ageGroups: ['All Ages'], location: 'Main Auditorium', speakerId: 'mark-collins', youtubeUrl: 'https://youtube.com/watch?v=5NV6Rdv1a3I' }
 ];
 
 const announcements = [
@@ -115,10 +116,10 @@ async function seedSpeakers() {
   await batch.commit();
 }
 
-async function seedEvents() {
+async function seedSchedule() {
   const batch = db.batch();
-  events.forEach((ev) => {
-    const ref = db.collection('events').doc(ev.id);
+  schedule.forEach((ev) => {
+    const ref = db.collection('schedule').doc(ev.id);
     const startTime = admin.firestore.Timestamp.fromDate(new Date(ev.startTime));
     const endTime = admin.firestore.Timestamp.fromDate(new Date(ev.endTime));
     const speaker = speakers.find((s) => s.id === ev.speakerId);
@@ -162,7 +163,7 @@ async function seedPrayerRequests(userLookup) {
 }
 
 async function seedFeedback(userLookup) {
-  const eventIds = events.slice(0, 4).map((e) => e.id);
+  const eventIds = schedule.slice(0, 4).map((e) => e.id);
   const sample = [
     { email: 'attendee7@demo.test', type: 'overall', positives: 'Loved the community feel.', improvements: 'More signage would help.', questions: 'Will slides be shared?', isAnonymous: false },
     { email: 'attendee8@demo.test', type: 'session', eventId: eventIds[0], positives: 'Powerful worship.', improvements: 'Need more shade.', questions: '', isAnonymous: false },
@@ -205,7 +206,7 @@ async function main() {
   }
 
   await seedSpeakers();
-  await seedEvents();
+  await seedSchedule();
   await seedAnnouncements();
   await seedPrayerRequests(userLookup);
   await seedFeedback(userLookup);

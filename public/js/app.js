@@ -180,7 +180,8 @@
   }
 
   async function loadEvents() {
-    const snap = await db.collection('events').orderBy('startTime').get();
+    // Use canonical schedule collection (legacy "events" is deprecated).
+    const snap = await db.collection('schedule').orderBy('startTime').get();
     state.events = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
     state.eventsMap = new Map(state.events.map((e) => [e.id, e]));
     renderSchedule();

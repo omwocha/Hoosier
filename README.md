@@ -57,7 +57,7 @@ Config is embedded in `public/js/firebase-init.js`; no .env required.
 2) Install deps for seeding: `npm install`
 3) Run `npm run seed`
    - Seeds 20 users (admin/viewer/prayerCoordinator + attendees)
-   - 4 speakers, 10 events, 5 announcements
+   - 4 speakers, 10 schedule items for June 1-6, 2026, 5 announcements
    - 6 prayer requests, 12 feedback entries
    - Sets custom claims for staff roles and writes role on user docs
 
@@ -74,13 +74,13 @@ Config is embedded in `public/js/firebase-init.js`; no .env required.
 - prayerCoordinator: manage prayer queue (read/update), no other admin writes
 
 ## Resetting the Demo
-1) Delete collections in Firestore (users, events, speakers, announcements, prayerRequests, feedback). Simple approach: use Firestore console with filters or `firebase firestore:delete` commands.
+1) Delete collections in Firestore (users, schedule, speakers, announcements, prayerRequests, feedback; legacy events is deprecated). Simple approach: use Firestore console with filters or `firebase firestore:delete` commands.
 2) Re-run `npm run seed` to repopulate.
 3) If you cleared Auth users, rerun seed to recreate accounts/claims.
 
 ## Data Model (Firestore)
 - users/{uid}: fullName, email, phone, maritalStatus, gender, dateOfBirth, ageBracket, church, role, timestamps
-- events/{eventId}: title, description, startTime, endTime, ageGroups, location, speakerId, youtubeUrl
+- schedule/{eventId}: title, description, startTime, endTime, ageGroups, location, speakerId, youtubeUrl
 - speakers/{speakerId}: name, bio, photoUrl?, youtubeChannelUrl?
 - announcements/{announcementId}: title, message, timestamp, audience
 - prayerRequests/{id}: requestText, isAnonymous, userId (nullable), status (pending|prayedFor), timestamp, updatedBy
@@ -88,7 +88,7 @@ Config is embedded in `public/js/firebase-init.js`; no .env required.
 
 ## Security Rules Highlights
 - users: attendees read/write only their doc; admin/viewer can read all; only admin can change roles (role writes blocked for self-service)
-- events/speakers/announcements: public read; admin write
+- schedule/speakers/announcements: public read; admin write
 - prayerRequests: signed-in create; user reads own; admin/prayerCoordinator read/update status
 - feedback: signed-in create; admin/viewer read; admin update/delete
 
@@ -110,3 +110,4 @@ External only for demo: redirects to AdventistGiving; no payments handled in app
 - Age bracket computed client-side at registration/profile save.
 - No capacity enforcement or payments. Notifications are in-app only via announcements.
 - Uses Firebase CDN scripts (no build tooling, no Vite).
+- Canonical calendar collection is `schedule` (legacy `events` is read-only); run `scripts/seed.js` to populate June 1-6, 2026 demo data.

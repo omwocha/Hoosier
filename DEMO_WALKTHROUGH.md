@@ -21,7 +21,7 @@ Use this checklist to walk the board through the demo flows. All data is demo-on
 ## Attendee Flow
 - `/home`: show profile snapshot, upcoming sessions, announcements, and prayer preview
 - `/profile`: update a field (e.g., phone/church) and save; explain age bracket auto-calculated
-- `/schedule`: browse list, click into `#/event?id=<id>` to show details + YouTube link
+- `/schedule`: browse June 1-6, 2026 sessions, click into `#/event?id=<id>` to show details + YouTube link
 - `/announcements`: note real-time feed from staff
 - `/prayer`: submit a request (optionally anonymous), see it in “My Requests” with pending status
 - `/feedback`: submit a session or overall entry (optionally anonymous)
@@ -37,4 +37,4 @@ Use this checklist to walk the board through the demo flows. All data is demo-on
 - Optional: log in as `prayer@demo.test` to show prayerCoordinator-only view (can update prayer statuses, no other admin writes)
 
 ## Reset During Demo
-- If you need a clean slate, delete collections (users, events, speakers, announcements, prayerRequests, feedback) in Firestore console, then rerun `npm run seed`.
+- If you need a clean slate, delete collections (users, schedule, speakers, announcements, prayerRequests, feedback; legacy events is deprecated) in Firestore console, then rerun `npm run seed`.

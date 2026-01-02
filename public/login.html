@@ -79,91 +79,104 @@
   </footer>
 
   <script>
-    (function() {
-      const loginForm = document.getElementById('loginForm');
-      const registerForm = document.getElementById('registerForm');
-      const googleBtn = document.getElementById('googleBtn');
-      const resetBtn = document.getElementById('resetBtn');
-      const messageBox = document.getElementById('authMessage');
-      const auth = firebase.auth();
+    (function initLogin() {
+      function start() {
+        if (!(window.firebase && window.HCMAuth)) {
+          document.addEventListener('DOMContentLoaded', start, { once: true });
+          return;
+        }
 
-      function setMessage(text, isError) {
-        messageBox.textContent = text || '';
-        messageBox.className = 'auth-message' + (isError ? ' error' : '');
-      }
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const googleBtn = document.getElementById('googleBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const messageBox = document.getElementById('authMessage');
+        const auth = firebase.auth();
 
-      function setLoading(isLoading) {
-        [loginForm, registerForm, googleBtn, resetBtn].forEach((el) => {
-          if (!el) return;
-          el.querySelectorAll ? el.querySelectorAll('button, input').forEach((i) => i.disabled = isLoading) : el.disabled = isLoading;
+        function setMessage(text, isError) {
+          messageBox.textContent = text || '';
+          messageBox.className = 'auth-message' + (isError ? ' error' : '');
+        }
+
+        function setLoading(isLoading) {
+          [loginForm, registerForm, googleBtn, resetBtn].forEach((el) => {
+            if (!el) return;
+            el.querySelectorAll ? el.querySelectorAll('button, input').forEach((i) => i.disabled = isLoading) : el.disabled = isLoading;
+          });
+        }
+
+        loginForm?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const data = new FormData(loginForm);
+          setLoading(true);
+          setMessage('Signing in...');
+          try {
+            await HCMAuth.signInWithEmail(data.get('email'), data.get('password'));
+          } catch (err) {
+            setMessage(err.message || 'Sign in failed', true);
+            setLoading(false);
+          }
+        });
+
+        registerForm?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const data = new FormData(registerForm);
+          setLoading(true);
+          setMessage('Creating account...');
+          try {
+            await HCMAuth.registerWithEmail(data.get('email'), data.get('password'), data.get('fullName'));
+          } catch (err) {
+            setMessage(err.message || 'Registration failed', true);
+            setLoading(false);
+          }
+        });
+
+        googleBtn?.addEventListener('click', async () => {
+          setLoading(true);
+          setMessage('Opening Google Sign-In...');
+          try {
+            await HCMAuth.signInWithGoogle();
+          } catch (err) {
+            setMessage(err.message || 'Google Sign-In failed', true);
+            setLoading(false);
+          }
+        });
+
+        resetBtn?.addEventListener('click', async () => {
+          const email = prompt('Enter your email to reset password:');
+          if (!email) return;
+          setLoading(true);
+          setMessage('Sending reset email...');
+          try {
+            await HCMAuth.sendPasswordReset(email);
+            setMessage('Password reset email sent.');
+          } catch (err) {
+            setMessage(err.message || 'Reset failed', true);
+          } finally {
+            setLoading(false);
+          }
+        });
+
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            setLoading(true);
+            setMessage('Signing you in...');
+            const provider = user.providerData?.[0]?.providerId || 'password';
+            try {
+              await HCMAuth.ensureUserDocument(user, provider);
+            } catch (e) {
+              console.warn('Unable to ensure profile', e);
+            }
+            HCMAuth.redirectAfterLogin(HCMAuth.getReturnUrl());
+          }
         });
       }
 
-      loginForm?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData(loginForm);
-        setLoading(true);
-        setMessage('Signing in...');
-        try {
-          await HCMAuth.signInWithEmail(data.get('email'), data.get('password'));
-        } catch (err) {
-          setMessage(err.message || 'Sign in failed', true);
-          setLoading(false);
-        }
-      });
-
-      registerForm?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData(registerForm);
-        setLoading(true);
-        setMessage('Creating account...');
-        try {
-          await HCMAuth.registerWithEmail(data.get('email'), data.get('password'), data.get('fullName'));
-        } catch (err) {
-          setMessage(err.message || 'Registration failed', true);
-          setLoading(false);
-        }
-      });
-
-      googleBtn?.addEventListener('click', async () => {
-        setLoading(true);
-        setMessage('Opening Google Sign-In...');
-        try {
-          await HCMAuth.signInWithGoogle();
-        } catch (err) {
-          setMessage(err.message || 'Google Sign-In failed', true);
-          setLoading(false);
-        }
-      });
-
-      resetBtn?.addEventListener('click', async () => {
-        const email = prompt('Enter your email to reset password:');
-        if (!email) return;
-        setLoading(true);
-        setMessage('Sending reset email...');
-        try {
-          await HCMAuth.sendPasswordReset(email);
-          setMessage('Password reset email sent.');
-        } catch (err) {
-          setMessage(err.message || 'Reset failed', true);
-        } finally {
-          setLoading(false);
-        }
-      });
-
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          setLoading(true);
-          setMessage('Signing you in...');
-          const provider = user.providerData?.[0]?.providerId || 'password';
-          try {
-            await HCMAuth.ensureUserDocument(user, provider);
-          } catch (e) {
-            console.warn('Unable to ensure profile', e);
-          }
-          HCMAuth.redirectAfterLogin(HCMAuth.getReturnUrl());
-        }
-      });
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start, { once: true });
+      } else {
+        start();
+      }
     })();
   </script>
 </body>
