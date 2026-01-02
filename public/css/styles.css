@@ -84,6 +84,16 @@ main { padding: 32px; max-width: 1200px; margin: 0 auto; }
 .hero-actions { display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
 .pill { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,0.15); }
 .placeholder { min-height: 200px; text-align: center; border: 1px dashed rgba(255,255,255,0.5); color: rgba(255,255,255,0.9); }
+.hero-visual { display: flex; align-items: stretch; }
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08);
+}
 
 .panel { display: none; gap: 16px; flex-direction: column; margin-bottom: 32px; }
 .panel.active { display: flex; }
