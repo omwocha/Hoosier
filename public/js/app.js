@@ -157,11 +157,12 @@
   }
 
   function highlightNav(routeKey) {
-    document.querySelectorAll('.nav-link').forEach((link) => {
-      const navKey = link.getAttribute('href').replace('#', '');
-      link.classList.toggle('active', navKey === routeKey || (routeKey === '/event/:id' && navKey === '/schedule'));
-    });
-  }
+  document.querySelectorAll('.nav-link').forEach((link) => {
+    const navKey = link.getAttribute('href').replace('#', '');
+    const isEvent = routeKey === '/event';
+    link.classList.toggle('active', navKey === routeKey || (isEvent && navKey === '/schedule'));
+  });
+}
 
   function updateNav() {
     const loggedIn = !!state.user;
@@ -405,7 +406,7 @@
       case '/schedule':
         renderSchedule();
         break;
-      case '/event/:id':
+      case '/event':
         renderEventDetail(params.id);
         break;
       case '/announcements':
