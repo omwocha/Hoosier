@@ -35,11 +35,25 @@
     const params = new URLSearchParams(window.location.search || '');
     return params.get('return');
   }
+  function safeReturnUrl(raw) {
+  const url = raw || '/index.html';
+
+  // If return points to login/signup, ignore it and go home instead
+  if (url.includes('/login.html') || url.includes('/signup.html') || url.includes('/register.html')) {
+    return '/index.html';
+  }
+  return url;
+}
 
   function redirectAfterLogin(returnUrl) {
     const target = returnUrl || '/index.html';
     window.location.href = target;
   }
+  
+  function redirectAfterLogin(returnUrl) {
+  window.location.href = safeReturnUrl(returnUrl || getReturnUrl());
+}
+
 
   async function signInWithGoogle(returnUrl) {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -76,9 +90,12 @@
   }
 
   function redirectToLoginWithReturn(returnUrl) {
-    const encoded = encodeURIComponent(returnUrl || window.location.href);
-    window.location.href = `/login.html?return=${encoded}`;
+  const desired = safeReturnUrl(returnUrl || window.location.href);
+  const encoded = encodeURIComponent(desired);
+  window.location.href = `/login.html?return=${encoded}`;
   }
+
+
 
   window.HCMAuth = {
     ensureUserDocument,
