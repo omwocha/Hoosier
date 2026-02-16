@@ -76,3 +76,6 @@ node_modules/
 
 # Google Service Account Key
 serviceAccountKey.json
+
+# Local Firebase web config (do not commit)
+public/js/firebase-init.js

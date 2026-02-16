@@ -2,13 +2,13 @@
 
 Firebase Hosting demo for the Indiana Conference Hoosier Camp Meeting app. HTML/CSS/JS (no build step) with Firebase Auth + Firestore. Demo-only data; not for production.
 
-Config is embedded in `public/js/firebase-init.js`; no .env required.
+Firebase web config is loaded from local-only `public/js/firebase-init.js` (gitignored).
 
 ## Project Structure
 - public/index.html: single-page UI with hash/query routing for attendee/admin screens
 - public/login.html: dedicated login/sign-up + Google Sign-In page
 - public/css/styles.css: theme styling (navy/slate, clean layout)
-- public/js/firebase-init.js: initializes Firebase with the hard-coded config
+- public/js/firebase-init.js: local-only Firebase init file (not committed)
 - public/js/auth.js: shared auth helpers (email/password, Google, password reset, user doc provisioning)
 - public/js/router-guards.js: redirects unauthenticated users to login with return URL
 - public/js/app.js: Firebase wiring, routing, data rendering
@@ -39,9 +39,31 @@ Config is embedded in `public/js/firebase-init.js`; no .env required.
 - Optional: set custom claim `role` via console/CLI; rules rely on the role field for this demo.
 
 ## Prerequisites
-- Firebase project with Hosting, Auth, and Firestore enabled (config is already hard-coded for `hoosier-camp`)
+- Firebase project with Hosting, Auth, and Firestore enabled
 - Node 18+ only if you plan to run the seed script (frontend requires no npm install)
 - Service account key only if running the seed script (store as serviceAccountKey.json or set GOOGLE_APPLICATION_CREDENTIALS)
+
+## Firebase Client Config (Local Only)
+Create `public/js/firebase-init.js` locally with your Firebase web app config:
+
+```js
+(function() {
+  const firebaseConfig = {
+    apiKey: "<YOUR_API_KEY>",
+    authDomain: "<YOUR_AUTH_DOMAIN>",
+    databaseURL: "<YOUR_DATABASE_URL>",
+    projectId: "<YOUR_PROJECT_ID>",
+    storageBucket: "<YOUR_STORAGE_BUCKET>",
+    messagingSenderId: "<YOUR_MESSAGING_SENDER_ID>",
+    appId: "<YOUR_APP_ID>",
+    measurementId: "<YOUR_MEASUREMENT_ID>"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+})();
+```
 
 ## Local Development (no build step)
 1) Serve: `firebase serve --only hosting` (frontend works without npm)
