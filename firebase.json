@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/elder-scheduler.html",
+        "destination": "/elder-scheduler.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

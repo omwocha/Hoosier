@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elder Sabbath Scheduler - South Bend First SDA Church</title>
+  <link rel="stylesheet" href="css/elder-scheduler.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">SBF</div>
+      <div class="brand-text">
+        <div class="brand-title">Elder Sabbath Duty Scheduler</div>
+        <div class="brand-subtitle">South Bend First SDA Church</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link active" href="#calendar">Calendar</a>
+      <a class="nav-link" href="#summary">Summary</a>
+      <a class="button ghost" href="/">Main Site</a>
+    </nav>
+  </header>
+
+  <main id="app">
+    <!-- Elder Selection Panel -->
+    <section class="elder-panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">June - December 2026</p>
+          <h1>Sabbath Duty Sign-Up</h1>
+          <p>Elders, select your name and click on the Sabbath dates you would like to be on duty.</p>
+        </div>
+      </div>
+
+      <div class="elder-controls card">
+        <div class="elder-select-row">
+          <label for="elderSelect">Select Your Name</label>
+          <select id="elderSelect">
+            <option value="">-- Choose an Elder --</option>
+          </select>
+        </div>
+        <div class="elder-manage-row">
+          <div class="add-elder-group">
+            <input type="text" id="newElderName" placeholder="Add new elder name">
+            <button class="button primary" id="addElderBtn">Add Elder</button>
+          </div>
+          <button class="button danger" id="removeElderBtn" disabled>Remove Selected Elder</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calendar View -->
+    <section id="calendar" class="calendar-section">
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </section>
+
+    <!-- Summary View -->
+    <section id="summary" class="summary-section" style="display:none;">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Overview</p>
+          <h2>Scheduling Summary</h2>
+          <p>Complete view of all elder duty assignments.</p>
+        </div>
+        <div class="summary-actions">
+          <button class="button secondary" id="printBtn">Print Schedule</button>
+          <button class="button danger-outline" id="clearAllBtn">Clear All Data</button>
+        </div>
+      </div>
+
+      <!-- Summary by Date -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Schedule by Date</h3>
+        </div>
+        <div id="summaryByDate" class="summary-list"></div>
+      </div>
+
+      <!-- Summary by Elder -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Schedule by Elder</h3>
+        </div>
+        <div id="summaryByElder" class="summary-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>South Bend First SDA Church - 2026</div>
+    <div class="muted small">Elder Sabbath Duty Scheduler</div>
+  </footer>
+
+  <script src="js/elder-scheduler.js"></script>
+</body>
+</html>
