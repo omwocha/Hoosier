@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APNAD — Adventist Pastors in North America Division</title>
+  <meta name="description" content="A fellowship for Seventh-day Adventist pastors serving across the North American Division — events, resources, and community." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/apnad.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow">Ministerial Association</span>
+      <h1>Pastors serving pastors across the North American Division</h1>
+      <p class="lead">APNAD is a fellowship of Seventh-day Adventist ministers committed to encouraging one another in word, work, and witness. Together we serve the Church — and one another.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="directory.html">Find a Pastor</a>
+        <a class="btn btn-outline" href="events.html">Upcoming Events</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Walking together in ministry</h2>
+      <p class="section-sub">Four commitments shape everything we do — gathering, growing, supporting, and sending out the pastors of the North American Division.</p>
+      <div class="grid grid-4">
+        <div class="pillar">
+          <div class="pillar-icon">✦</div>
+          <h3>Fellowship</h3>
+          <p>Retreats, regional gatherings, and the annual convention that bring our pastors face to face across nine union conferences.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">✚</div>
+          <h3>Continuing Education</h3>
+          <p>Workshops, cohorts, and a sermon library to sharpen the craft of preaching, leadership, and pastoral care.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">❦</div>
+          <h3>Member Care</h3>
+          <p>Confidential counseling, peer mentoring, and resources for pastoral families navigating the unique pressures of ministry.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">✺</div>
+          <h3>Mission</h3>
+          <p>Church planting, multicultural ministry, and bivocational pathways for the next generation of NAD pastors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="verse-banner">
+    <blockquote>"And he gave the apostles, the prophets, the evangelists, the shepherds and teachers, to equip the saints for the work of ministry, for building up the body of Christ."</blockquote>
+    <cite>Ephesians 4:11–12</cite>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="about-strip">
+        <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=900&q=80" alt="Pastors gathered in prayer" />
+        <div>
+          <span class="badge badge-blue">About APNAD</span>
+          <h2 style="margin-top:10px;">A ministry built on shared calling</h2>
+          <p class="lead">From the small congregations of the Canadian prairies to the multicultural megachurches of the Pacific coast, the pastors of the North American Division share one calling — to shepherd Christ's people faithfully until He returns.</p>
+          <p>APNAD exists to make sure no pastor walks that calling alone. We host the annual convention, publish the quarterly journal <em>Shepherding Together</em>, run the Member Care Hotline, and partner with the NAD Ministerial Department on ordination, mentoring, and clergy wellness.</p>
+          <p class="signature">— The APNAD Executive Team</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight" style="background: var(--paper); border-block: 1px solid var(--border);">
+    <div class="container">
+      <div class="stats">
+        <div><div class="stat-num">3,400+</div><div class="stat-label">Pastors</div></div>
+        <div><div class="stat-num">9</div><div class="stat-label">Union Conferences</div></div>
+        <div><div class="stat-num">5,800</div><div class="stat-label">Congregations</div></div>
+        <div><div class="stat-num">1.3M</div><div class="stat-label">Members Served</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Upcoming events</h2>
+      <p class="section-sub">From retreats to symposiums, find the next opportunity to gather, learn, and rest.</p>
+      <div class="grid grid-3" id="homeEvents"></div>
+      <div style="text-align:center;margin-top:30px;">
+        <a class="btn btn-ghost" href="events.html">See all events →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--paper); border-top: 1px solid var(--border);">
+    <div class="container">
+      <h2 class="section-title">From the blog</h2>
+      <p class="section-sub">Reflections, stories, and practical wisdom from pastors across the division.</p>
+      <div class="grid grid-3" id="homePosts"></div>
+      <div style="text-align:center;margin-top:30px;">
+        <a class="btn btn-ghost" href="blog.html">Read more posts →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-band">
+        <h2>Stay connected</h2>
+        <p>Get the monthly APNAD newsletter — convention news, member care resources, and a short letter from one of our pastors.</p>
+        <form class="newsletter-form">
+          <input type="email" required placeholder="you@church.org" aria-label="Email address" />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

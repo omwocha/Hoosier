@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pastor Directory — APNAD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/apnad.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section class="page-hero">
+    <h1>Pastor Directory</h1>
+    <p>Find a pastor by name, congregation, role, or union conference. A connected ministry begins with knowing who is walking beside you.</p>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="toolbar">
+        <div class="field" style="flex:1; min-width:240px;">
+          <input id="searchInput" type="search" placeholder="Search by name, church, or city..." aria-label="Search pastors" />
+        </div>
+        <div class="field">
+          <select id="filterUnion" aria-label="Filter by union conference">
+            <option value="">All unions</option>
+          </select>
+          <select id="filterRole" aria-label="Filter by role">
+            <option value="">All roles</option>
+          </select>
+        </div>
+        <div id="pastorCount" style="color:var(--muted); font-size:0.9rem;"></div>
+      </div>
+
+      <div class="grid grid-3" id="pastorGrid"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
